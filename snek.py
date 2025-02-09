@@ -20,11 +20,26 @@ class Snake:
         self.body = init_body
         self.direction = init_direction
 
-    def take_step(self, position):
-        self.body = self.body[1:] + [position]
+    def take_step(self):
+        x_coord_head, y_coord_head = self.head()
+        if (self.direction == UP):
+            self.body = self.body[1:] + [(x_coord_head - 1, y_coord_head)]
+        elif (self.direction == DOWN):
+            self.body = self.body[1:] + [(x_coord_head + 1, y_coord_head)]
+        elif (self.direction == LEFT):
+            self.body = self.body[1:] + [(x_coord_head, y_coord_head - 1)]
+        elif (self.direction == RIGHT):
+            self.body = self.body[1:] + [(x_coord_head, y_coord_head + 1)]
+
 
     def set_direction(self, direction):
+        if (self.direction == UP and direction == DOWN) or \
+        (self.direction == DOWN and direction == UP) or \
+        (self.direction == RIGHT and direction == LEFT) or \
+        (self.direction == LEFT and direction == RIGHT):
+            return  # Ignore invalid direction change
         self.direction = direction
+
 
     def head(self):
         return self.body[-1]
@@ -36,7 +51,7 @@ class Game:
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.snake = Snake([(1,1), (2,1), (3,1), (4,1)], UP)
+        self.snake = Snake([(1,1), (2,1), (3,1), (4,1)], DOWN)
 
     def board_matrix(self):
         # Return a matrix filled with spaces
@@ -67,6 +82,7 @@ class Game:
         x_coord_head, y_coord_head = self.snake.head()
         board[x_coord_head][y_coord_head] = "x"
         
+        # Print the board 
         for y in range(self.height):
             print("".join(board[y]))  # Join elements of each row into a single string
 
@@ -77,8 +93,19 @@ while gameLost == False:
     direction = game.get_user_input()
     
     if (direction == "W" or direction == "w"):
-        pass
+        game.snake.set_direction(UP)
+        game.snake.take_step()
+    elif (direction == "S" or direction == "s"):
+        game.snake.set_direction(DOWN)
+        game.snake.take_step()
+    elif (direction == "A" or direction == "a"):
+        game.snake.set_direction(LEFT)
+        game.snake.take_step()
+    elif (direction == "D" or direction == "d"):
+        game.snake.set_direction(RIGHT)
+        game.snake.take_step()
+
     else:
         print("Invalid input.")
-    time.sleep(1)
+    time.sleep(0.5)
     clear_terminal()
