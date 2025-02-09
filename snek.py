@@ -37,8 +37,9 @@ class Snake:
         (self.direction == DOWN and direction == UP) or \
         (self.direction == RIGHT and direction == LEFT) or \
         (self.direction == LEFT and direction == RIGHT):
-            return  # Ignore invalid direction change
+            return False # Ignore invalid direction change
         self.direction = direction
+        return True
 
 
     def head(self):
@@ -93,17 +94,17 @@ while gameLost == False:
     direction = game.get_user_input()
     
     if (direction == "W" or direction == "w"):
-        game.snake.set_direction(UP)
-        game.snake.take_step()
+        if (game.snake.set_direction(UP) == True):
+            game.snake.take_step()
     elif (direction == "S" or direction == "s"):
-        game.snake.set_direction(DOWN)
-        game.snake.take_step()
+        if (game.snake.set_direction(DOWN) == True):
+            game.snake.take_step()
     elif (direction == "A" or direction == "a"):
-        game.snake.set_direction(LEFT)
-        game.snake.take_step()
+        if (game.snake.set_direction(LEFT) == True):
+            game.snake.take_step()
     elif (direction == "D" or direction == "d"):
-        game.snake.set_direction(RIGHT)
-        game.snake.take_step()
+        if (game.snake.set_direction(RIGHT) == True):
+            game.snake.take_step()
 
     else:
         print("Invalid input.")
