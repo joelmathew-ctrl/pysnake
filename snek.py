@@ -4,7 +4,18 @@
 import numpy as np 
 
 class Snake:
-    pass
+    def __init__(self, init_body, init_direction):
+        self.body = init_body
+        self.direction = init_direction
+
+    def take_step(self, position):
+        self.body = self.body[1:] + [position]
+
+    def set_direction(self, direction):
+        self.direction = direction
+
+    def head(self):
+        return self.body[-1]
 
 class Apple:
     pass
