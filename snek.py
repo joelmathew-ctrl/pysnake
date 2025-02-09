@@ -32,7 +32,15 @@ class Snake:
         elif self.direction == RIGHT:
             y_coord_head = (y_coord_head + 1) % game.width
 
-        self.body = self.body[1:] + [(x_coord_head, y_coord_head)]
+        new_head = (x_coord_head, y_coord_head)
+
+        # Check for self-collision
+        if new_head in self.body:
+            return True  # Collision detected, game lost
+
+        self.body = self.body[1:] + [new_head]
+        return False  # No collision, game continues
+
 
 
 
@@ -93,24 +101,29 @@ class Game:
 
 game = Game(10, 20)
 gameLost = False
-while gameLost == False:
+while not gameLost:
     game.render()
     direction = game.get_user_input()
     
-    if (direction == "W" or direction == "w"):
-        if (game.snake.set_direction(UP) == True):
-            game.snake.take_step()
-    elif (direction == "S" or direction == "s"):
-        if (game.snake.set_direction(DOWN) == True):
-            game.snake.take_step()
-    elif (direction == "A" or direction == "a"):
-        if (game.snake.set_direction(LEFT) == True):
-            game.snake.take_step()
-    elif (direction == "D" or direction == "d"):
-        if (game.snake.set_direction(RIGHT) == True):
-            game.snake.take_step()
+    if direction == "W" or direction == "w":
+        if game.snake.set_direction(UP):
+            gameLost = game.snake.take_step()
+    elif direction == "S" or direction == "s":
+        if game.snake.set_direction(DOWN):
+            gameLost = game.snake.take_step()
+    elif direction == "A" or direction == "a":
+        if game.snake.set_direction(LEFT):
+            gameLost = game.snake.take_step()
+    elif direction == "D" or direction == "d":
+        if game.snake.set_direction(RIGHT):
+            gameLost = game.snake.take_step()
     else:
         print("Invalid input.")
-
+    
+    if gameLost:
+        print("\nOops! You just became your own worst enemy. 🐍💀 Game Over!")
+        time.sleep(3)
+    
     time.sleep(0.5)
     clear_terminal()
+
