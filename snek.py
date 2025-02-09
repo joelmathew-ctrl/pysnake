@@ -22,14 +22,18 @@ class Snake:
 
     def take_step(self):
         x_coord_head, y_coord_head = self.head()
-        if (self.direction == UP):
-            self.body = self.body[1:] + [(x_coord_head - 1, y_coord_head)]
-        elif (self.direction == DOWN):
-            self.body = self.body[1:] + [(x_coord_head + 1, y_coord_head)]
-        elif (self.direction == LEFT):
-            self.body = self.body[1:] + [(x_coord_head, y_coord_head - 1)]
-        elif (self.direction == RIGHT):
-            self.body = self.body[1:] + [(x_coord_head, y_coord_head + 1)]
+
+        if self.direction == UP:
+            x_coord_head = (x_coord_head - 1) % game.height
+        elif self.direction == DOWN:
+            x_coord_head = (x_coord_head + 1) % game.height
+        elif self.direction == LEFT:
+            y_coord_head = (y_coord_head - 1) % game.width
+        elif self.direction == RIGHT:
+            y_coord_head = (y_coord_head + 1) % game.width
+
+        self.body = self.body[1:] + [(x_coord_head, y_coord_head)]
+
 
 
     def set_direction(self, direction):
@@ -105,8 +109,8 @@ while gameLost == False:
     elif (direction == "D" or direction == "d"):
         if (game.snake.set_direction(RIGHT) == True):
             game.snake.take_step()
-
     else:
         print("Invalid input.")
+
     time.sleep(0.5)
     clear_terminal()
