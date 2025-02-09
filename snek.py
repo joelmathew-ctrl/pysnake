@@ -2,12 +2,17 @@
 # Author: Joel Mathew
 
 import numpy as np 
+import os
 
 # Defining directions 
 UP = (0,1)
 DOWN = (0,-1)
 LEFT = (-1,0)
 RIGHT = (1,0)
+
+# Function to clear terminal
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 class Snake:
     def __init__(self, init_body, init_direction):
@@ -49,6 +54,9 @@ class Game:
 
         return board
 
+    def get_user_input(self):
+        return (input("Enter the direction the snake should move in and press enter: (W/A/S/D)"))
+
     def render(self):
         board = self.board_matrix()
         for x in range(len(self.snake.body)):
@@ -62,4 +70,9 @@ class Game:
             print("".join(board[y]))  # Join elements of each row into a single string
 
 game = Game(10, 20)
-game.render()
+gameLost = False
+while gameLost == False:
+    game.render()
+    direction = game.get_user_input()
+    
+    clear_terminal()
