@@ -3,6 +3,7 @@
 
 import numpy as np 
 import os
+import time
 
 # Defining directions 
 UP = (0,1)
@@ -75,4 +76,9 @@ while gameLost == False:
     game.render()
     direction = game.get_user_input()
     
+    if (direction == "W" or direction == "w"):
+        pass
+    else:
+        print("Invalid input.")
+    time.sleep(1)
     clear_terminal()
