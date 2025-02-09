@@ -53,9 +53,6 @@ class Snake:
         self.body = self.body[1:] + [new_head]
         return False  # No collision, game continues
 
-
-
-
     def set_direction(self, direction):
         if (self.direction == UP and direction == DOWN) or \
         (self.direction == DOWN and direction == UP) or \
@@ -65,18 +62,28 @@ class Snake:
         self.direction = direction
         return True
 
-
     def head(self):
         return self.body[-1]
 
+
 class Apple:
-    pass
+    def __init__(self, x_coord, y_coord):
+        self.x_coord = x_coord
+        self.y_coord = y_coord
+
+    def position_is_empty(self, board):
+        if (board[self.x_coord][self.y_coord] == " "):
+            return True
+        else:
+            return False
+
 
 class Game:
     def __init__(self, height, width):
         self.height = height
         self.width = width
         self.snake = Snake([(1,1), (2,1), (3,1), (4,1)], DOWN)
+        self.apple = Apple(random.randint(1, height), random.randint(1, width))
 
     def board_matrix(self):
         # Return a matrix filled with spaces
@@ -106,6 +113,12 @@ class Game:
         
         x_coord_head, y_coord_head = self.snake.head()
         board[x_coord_head][y_coord_head] = "x"
+        
+        while self.apple.position_is_empty(board) == False:
+            self.apple.x_coord = random.randint(1, self.height)
+            self.apple.y_coord = random.randint(1, self.width)
+
+        board[self.apple.x_coord][self.apple.y_coord] = "*"
         
         # Print the board 
         for y in range(self.height):
