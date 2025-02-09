@@ -4,6 +4,7 @@
 import numpy as np 
 import os
 import time
+import random
 
 # Defining directions 
 UP = (0,1)
@@ -14,6 +15,17 @@ RIGHT = (1,0)
 # Function to clear terminal
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def get_valid_input(prompt):
+    while True:
+        try:
+            value = int(input(prompt))  # Try to convert input to integer
+            if value <= 5:  # Ensure the value is greater than 5
+                print("Please enter a number greater than 5.")
+            else:
+                return value
+        except ValueError:  # Handle non-integer inputs
+            print("Invalid input. Please enter a valid integer.")
 
 class Snake:
     def __init__(self, init_body, init_direction):
@@ -99,7 +111,13 @@ class Game:
         for y in range(self.height):
             print("".join(board[y]))  # Join elements of each row into a single string
 
-game = Game(10, 20)
+# Get valid height and width for the map
+game_height = get_valid_input("Enter the height of the map: ")
+game_width = get_valid_input("Enter the width of the map: ")
+
+print(f"Game map dimensions: Height = {game_height}, Width = {game_width}")
+
+game = Game(game_height, game_width)
 gameLost = False
 while not gameLost:
     game.render()
