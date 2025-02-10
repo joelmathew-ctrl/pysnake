@@ -71,10 +71,13 @@ class Snake:
 
     def increase_body_length(self):
         tail_x, tail_y = self.tail()
-        new_segment = (tail_x - self.direction[0], tail_y - self.direction[1])
+        prev_x, prev_y = self.body[1]  # Second segment (to determine tail direction)
+
+        # Determine growth direction by extending the tail backward
+        new_segment = (tail_x + (tail_x - prev_x), tail_y + (tail_y - prev_y))
+
         self.body.insert(0, new_segment)
-
-
+        
 
 class Apple:
     def __init__(self, x_coord, y_coord):
