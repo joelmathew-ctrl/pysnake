@@ -125,8 +125,8 @@ class Game:
         board[x_coord_head][y_coord_head] = "x"
         
         while self.apple.position_is_empty(board) == False:
-            self.apple.x_coord = random.randint(1, self.height)
-            self.apple.y_coord = random.randint(1, self.width)
+            self.apple.x_coord = random.randint(1, self.height-1)
+            self.apple.y_coord = random.randint(1, self.width-1)
 
         board[self.apple.x_coord][self.apple.y_coord] = "*"
         
