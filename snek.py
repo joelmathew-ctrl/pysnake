@@ -51,6 +51,7 @@ class Snake:
             return True  # Collision detected, game lost
 
         self.body = self.body[1:] + [new_head]
+        self.increase_body_length()
         return False  # No collision, game continues
 
     def set_direction(self, direction):
@@ -64,6 +65,15 @@ class Snake:
 
     def head(self):
         return self.body[-1]
+
+    def tail(self):
+        return self.body[0]
+
+    def increase_body_length(self):
+        tail_x, tail_y = self.tail()
+        new_segment = (tail_x - self.direction[0], tail_y - self.direction[1])
+        self.body.insert(0, new_segment)
+
 
 
 class Apple:
@@ -103,7 +113,7 @@ class Game:
         return board
 
     def get_user_input(self):
-        return (input("Enter the direction the snake should move in and press enter: (W/A/S/D)"))
+        return (input("Enter the direction the snake should move in and press enter (W/A/S/D): "))
 
     def render(self):
         board = self.board_matrix()
