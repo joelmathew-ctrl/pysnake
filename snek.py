@@ -32,7 +32,7 @@ class Snake:
         self.body = init_body
         self.direction = init_direction
 
-    def take_step(self):
+    def take_step(self, apple, board):
         x_coord_head, y_coord_head = self.head()
 
         if self.direction == UP:
@@ -50,8 +50,19 @@ class Snake:
         if new_head in self.body:
             return True  # Collision detected, game lost
 
-        self.body = self.body[1:] + [new_head]
-        self.increase_body_length()
+        # Check if apple is eaten
+        if new_head == (apple.x_coord, apple.y_coord):
+            self.increase_body_length()  # Increase body length
+
+            # Find a new empty position for the apple
+            while True:
+                apple.x_coord = random.randint(1, game.height - 2)
+                apple.y_coord = random.randint(1, game.width - 2)
+                if (apple.x_coord, apple.y_coord) not in self.body:
+                    break  # Ensure the apple is not placed on the snake
+        else:
+            self.body = self.body[1:] + [new_head]  # Normal movement (shift forward)
+
         return False  # No collision, game continues
 
     def set_direction(self, direction):
@@ -77,7 +88,7 @@ class Snake:
         new_segment = (tail_x + (tail_x - prev_x), tail_y + (tail_y - prev_y))
 
         self.body.insert(0, new_segment)
-        
+
 
 class Apple:
     def __init__(self, x_coord, y_coord):
@@ -85,7 +96,7 @@ class Apple:
         self.y_coord = y_coord
 
     def position_is_empty(self, board):
-        if (board[self.x_coord][self.y_coord] == " "):
+        if (board[self.x_coord-1][self.y_coord-1] == " "):
             return True
         else:
             return False
@@ -151,16 +162,16 @@ while not gameLost:
     
     if direction == "W" or direction == "w":
         if game.snake.set_direction(UP):
-            gameLost = game.snake.take_step()
+            gameLost = game.snake.take_step(game.apple, game.board_matrix())
     elif direction == "S" or direction == "s":
         if game.snake.set_direction(DOWN):
-            gameLost = game.snake.take_step()
+            gameLost = game.snake.take_step(game.apple, game.board_matrix())
     elif direction == "A" or direction == "a":
         if game.snake.set_direction(LEFT):
-            gameLost = game.snake.take_step()
+            gameLost = game.snake.take_step(game.apple, game.board_matrix())
     elif direction == "D" or direction == "d":
         if game.snake.set_direction(RIGHT):
-            gameLost = game.snake.take_step()
+            gameLost = game.snake.take_step(game.apple, game.board_matrix())
     else:
         print("Invalid input.")
     
