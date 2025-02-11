@@ -1,7 +1,7 @@
-# PySnake - A Simple Snake Game in Python
+# pysnake - A Simple Snake Game in Python
 
 ## Overview
-PySnake is a classic snake game implemented in Python. The game involves controlling a snake to eat apples, which makes the snake grow longer. The game ends if the snake collides with itself. The game is played in the terminal and features a customizable game board size.
+pysnake is a classic snake game implemented in Python. The game involves controlling a snake to eat apples, which makes the snake grow longer. The game ends if the snake collides with itself. The game is played in the terminal and features a customizable game board size.
 
 ## Features
 - **Customizable Game Board**: Set the height and width of the game board.
