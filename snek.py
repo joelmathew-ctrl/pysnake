@@ -35,33 +35,39 @@ class Snake:
     def take_step(self, apple, board):
         x_coord_head, y_coord_head = self.head()
 
+        # Calculate new head position based on direction
         if self.direction == UP:
-            x_coord_head = (x_coord_head - 1) % game.height
+            new_head = (x_coord_head - 1, y_coord_head)
         elif self.direction == DOWN:
-            x_coord_head = (x_coord_head + 1) % game.height
+            new_head = (x_coord_head + 1, y_coord_head)
         elif self.direction == LEFT:
-            y_coord_head = (y_coord_head - 1) % game.width
+            new_head = (x_coord_head, y_coord_head - 1)
         elif self.direction == RIGHT:
-            y_coord_head = (y_coord_head + 1) % game.width
+            new_head = (x_coord_head, y_coord_head + 1)
 
-        new_head = (x_coord_head, y_coord_head)
+        # Wrap around the board if necessary
+        new_head = (
+            new_head[0] % game.height,
+            new_head[1] % game.width
+        )
 
         # Check for self-collision
         if new_head in self.body:
             return True  # Collision detected, game lost
 
-        # Check if apple is eaten
+        # Check if the new head position is the apple's position
         if new_head == (apple.x_coord, apple.y_coord):
-            self.increase_body_length()  # Increase body length
-
-            # Find a new empty position for the apple
+            self.increase_body_length()
+            
+            # Ensure apple spawns in a valid position
             while True:
-                apple.x_coord = random.randint(1, game.height - 2)
-                apple.y_coord = random.randint(1, game.width - 2)
+                apple.x_coord = random.randint(0, game.height - 1)
+                apple.y_coord = random.randint(0, game.width - 1)
                 if (apple.x_coord, apple.y_coord) not in self.body:
-                    break  # Ensure the apple is not placed on the snake
+                    break  # Ensures apple does not spawn on the snake
         else:
-            self.body = self.body[1:] + [new_head]  # Normal movement (shift forward)
+            # Normal movement (shift forward)
+            self.body = self.body[1:] + [new_head]
 
         return False  # No collision, game continues
 
@@ -107,7 +113,7 @@ class Game:
         self.height = height
         self.width = width
         self.snake = Snake([(1,1), (2,1), (3,1), (4,1)], DOWN)
-        self.apple = Apple(random.randint(1, height), random.randint(1, width))
+        self.apple = Apple(random.randint(0, height - 1), random.randint(0, width - 1))
 
     def board_matrix(self):
         # Return a matrix filled with spaces
